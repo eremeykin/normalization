@@ -9,7 +9,7 @@ namespace normalization
 {
     class TrigramDictionary
     {
-        Dictionary<String, List<DataBaseWord>> dict = new Dictionary<String, List<DataBaseWord>>();
+        Dictionary<String, StringCollection> dict = new Dictionary<String, StringCollection>();
 
         private static TrigramDictionary dictionary;
 
@@ -41,47 +41,25 @@ namespace normalization
         /// </summary>
         /// <param name="trigram"> триграмм</param>
         /// <param name="word">слово</param>
-        public void add(String trigram, DataBaseWord word)
+        public void add(String trigram, String word)
         {
-            if (!word.ToString().Contains(trigram))
+            if (!word.Contains(trigram))
             {
                 throw new ArgumentException(word + " does not contain trigram " + trigram);
             }
-
             if (this.dict.ContainsKey(trigram))
             {
-                this.dict[trigram].Add(word);
-                //if (!this.dict[trigram].Contains(word))
-                //    this.dict[trigram].Add(word);
+                if (!this.dict[trigram].Contains(word))
+                    this.dict[trigram].Add(word);
             }
             else
             {
-                List<DataBaseWord> wordList = new List<DataBaseWord>();
-                //StringCollection strColl = new StringCollection();
-                wordList.Add(word);
-                //strColl.Add(word);
-                this.dict.Add(trigram, wordList);
+                StringCollection strColl = new StringCollection();
+                strColl.Add(word);
+                this.dict.Add(trigram, strColl);
             }
         }
 
-        /// <summary>
-        /// Возвращает список слов базы данных для указанной триграммы
-        /// </summary>
-        /// <returns></returns>
-        public List<DataBaseWord> getDBWordsByTrigram(String trigram)
-        {
-            return dict[trigram];
-        }
-
-        /// <summary>
-        /// Показывает содержит ли словарь данную триграмму
-        /// </summary>
-        /// <param name="trigram"></param>
-        /// <returns></returns>
-        public bool containsTrigram(String trigram)
-        {
-            return dict.ContainsKey(trigram);
-        }
         /// <summary>
         /// ДЛЯ ОТЛАДКИ печатает словарь в консоль
         /// </summary>
@@ -92,8 +70,9 @@ namespace normalization
                 Console.WriteLine("_____________" + trigram + "_____________");
                 for (int i = 0; i < this.dict[trigram].Count; i++)
                 {
-                    Console.Write(this.dict[trigram][i] + " #"+this.dict[trigram][i].getDataBaseIndex());
-                    Console.WriteLine();
+                    Console.Write(this.dict[trigram][i] + " ");
+                    if (i % 6 == 0)
+                        Console.WriteLine();
                 }
                 Console.WriteLine("");
             }

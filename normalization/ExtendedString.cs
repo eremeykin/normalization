@@ -9,7 +9,7 @@ namespace normalization
 {
     class ExtendedString
     {
-        String s;
+        protected String s;
 
         public ExtendedString(String str)
         {
@@ -51,11 +51,14 @@ namespace normalization
         /// </summary>
         public int getWordCount()
         {
-            String[] words = s.Split(' ');
+            String[] words = this.s.Split(' ');
             return words.Length;
         }
 
-        //
+        /// <summary>
+        /// Возвращает массив шиглов
+        /// </summary>
+        /// <returns>Массив шинглов</returns>
         public String[] getShingles()
         {
             int shingleLength = 1;
@@ -75,7 +78,7 @@ namespace normalization
         /// <summary>
         /// Возвращает все Слова в строке
         /// </summary>
-        /// <returns>Слова[]</returns>
+        /// <returns>Слова</returns>
         public List<Word> getWords()
         {
             this.removeSpecChars();
